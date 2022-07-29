@@ -1,0 +1,417 @@
+/*
+    DEMO STYLE
+*/
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+@font-face {
+  font-family: "yekan";
+  src: url("../fonts/BYekan.eot");
+  src: url("../fonts/BYekan.eot#iefix") format("embedded-opentype"),
+    url("../fonts/BYekan.woff") format("woff"),
+    url("../fonts/BYekan.ttf") format("truetype"),
+    url("../fonts/BYekan.svg#CartoGothicStdBook") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: bold;
+  src: url("../fonts/iransans/eot/IRANSansWeb_Bold.eot");
+  src: url("../fonts/iransans/eot/IRANSansWeb_Bold.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-8 */ url("../fonts/iransans/woff2/IRANSansWeb_Bold.woff2")
+      format("woff2"),
+    /* FF39+,Chrome36+, Opera24+*/
+      url("../fonts/iransans/woff/IRANSansWeb_Bold.woff") format("woff"),
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+      url("../fonts/iransans/ttf/IRANSansWeb_Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: 500;
+  src: url("../fonts/iransans/eot/IRANSansWeb_Medium.eot");
+  src: url("../fonts/iransans/eot/IRANSansWeb_Medium.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-8 */ url("../fonts/iransans/woff2/IRANSansWeb_Medium.woff2")
+      format("woff2"),
+    /* FF39+,Chrome36+, Opera24+*/
+      url("../fonts/iransans/woff/IRANSansWeb_Medium.woff") format("woff"),
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+      url("../fonts/iransans/ttf/IRANSansWeb_Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: 300;
+  src: url("../fonts/iransans/eot/IRANSansWeb_Light.eot");
+  src: url("../fonts/iransans/eot/IRANSansWeb_Light.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-8 */ url("../fonts/iransans/woff2/IRANSansWeb_Light.woff2")
+      format("woff2"),
+    /* FF39+,Chrome36+, Opera24+*/
+      url("../fonts/iransans/woff/IRANSansWeb_Light.woff") format("woff"),
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+      url("../fonts/iransans/ttf/IRANSansWeb_Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: 200;
+  src: url("../fonts/iransans/eot/IRANSansWeb_UltraLight.eot");
+  src: url("../fonts/iransans/eot/IRANSansWeb_UltraLight.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-8 */ url("../fonts/iransans/woff2/IRANSansWeb_UltraLight.woff2")
+      format("woff2"),
+    /* FF39+,Chrome36+, Opera24+*/
+      url("../fonts/iransans/woff/IRANSansWeb_UltraLight.woff") format("woff"),
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+      url("../fonts/iransans/ttf/IRANSansWeb_UltraLight.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: IRANSans;
+  font-style: normal;
+  font-weight: normal;
+  src: url("../fonts/iransans/eot/IRANSansWeb.eot");
+  src: url("../fonts/iransans/eot/IRANSansWeb.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-8 */ url("../fonts/iransans/woff2/IRANSansWeb.woff2") format("woff2"),
+    /* FF39+,Chrome36+, Opera24+*/
+      url("../fonts/iransans/woff/IRANSansWeb.woff") format("woff"),
+    /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+      url("../fonts/iransans/ttf/IRANSansWeb.ttf") format("truetype");
+}
+
+body {
+  font-family: IRANSans;
+  background: #fafafa;
+  height: auto;
+  overflow: auto;
+}
+
+.iframe-container {
+  overflow: hidden;
+  /* Calculated from the aspect ration of the content (in case of 16:9 it is 9/16= 0.5625) */
+  padding-top: 0;
+  height: 100vh;
+  position: relative;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.iframe-container iframe {
+  border: 0;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.rightPanel {
+  width: 100%;
+  height: 100vh;
+  /* background: aqua; */
+  border-radius: 5px;
+  position: relative;
+}
+
+.rightPanel iframe {
+  width: 100%;
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  border-radius: 5px;
+  top: 0;
+  border: none;
+  /* padding-bottom: 50px; */
+}
+
+p {
+  font-family: IRANSans;
+  font-size: 1.1em;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.navbar {
+  /* padding: 5px; */
+  background: #fff;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+  background: #060342;
+  transition: 0.5s ease;
+  margin-right: 7px;
+  margin-left: 7px;
+}
+
+.navbar-btn:hover,
+.btn-info:hover {
+  background: rgb(55, 57, 77);
+  transition: 0.5s ease;
+}
+.navbar-btn:focus,
+.navbar-btn:focus-within,
+.navbar-btn:active,
+.btn-info:active,
+.btn-info:active:focus {
+  background: rgb(87, 90, 116);
+  transition: 0.5s ease;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dashed #ddd;
+  margin: 40px 0;
+}
+
+i,
+span {
+  display: inline-block;
+}
+
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+.wrapper {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  object-position: center;
+  object-fit: cover;
+}
+
+#sidebar {
+  min-width: 220px;
+  max-width: 220px;
+  background: #02011c;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+#sidebar.active {
+  min-width: 70px;
+  max-width: 70px;
+  text-align: center;
+}
+
+#sidebar.active .sidebar-header h3,
+#sidebar.active .CTAs {
+  display: none;
+}
+
+#sidebar.active .sidebar-header strong {
+  display: block;
+}
+
+#sidebar ul li a {
+  text-align: left;
+}
+
+#sidebar.active ul li a {
+  padding: 10px 10px;
+  text-align: center;
+  font-size: 0.85em;
+}
+
+#sidebar.active ul li a i {
+  margin-right: 0;
+  display: block;
+  font-size: 1.8em;
+  margin-bottom: 5px;
+}
+
+#sidebar.active ul ul a {
+  padding: 10px !important;
+}
+
+#sidebar.active a[aria-expanded="false"]::before,
+#sidebar.active a[aria-expanded="true"]::before {
+  top: auto;
+  bottom: 5px;
+  right: 50%;
+  -webkit-transform: translateX(50%);
+  -ms-transform: translateX(50%);
+  transform: translateX(50%);
+}
+
+#sidebar .sidebar-header {
+  padding: 5px 10px 10px;
+  background: #02011c;
+}
+
+#sidebar .sidebar-header strong {
+  display: none;
+  font-size: 1.8em;
+}
+
+#sidebar ul.components {
+  padding: 0;
+  /* border-bottom: 1px solid #263b46; */
+}
+
+#sidebar ul li a {
+  padding: 5px;
+  font-size: 0.9em;
+  display: block;
+  text-align: right;
+  border-bottom: 1px solid #00000052;
+}
+#sidebar ul li a:hover {
+  color: #d5d6da;
+  background: rgb(73, 76, 102);
+}
+#sidebar ul li a i {
+  margin-right: 5px;
+}
+
+#sidebar ul li.active > a,
+a[aria-expanded="true"] {
+  color: #d5d6da;
+  background: rgb(40, 37, 60);
+}
+
+a[data-toggle="collapse"] {
+  position: relative;
+}
+
+a[aria-expanded="false"]::before,
+a[aria-expanded="true"]::before {
+  content: "\e259";
+  display: block;
+  position: absolute;
+  left: 20px;
+  font-family: "Glyphicons Halflings";
+  font-size: 0.6em;
+}
+a[aria-expanded="true"]::before {
+  content: "\e260";
+}
+
+ul ul a {
+  font-size: 0.9em !important;
+  padding-right: 30px !important;
+  background: #3a3e4a;
+}
+
+ul.CTAs {
+  padding: 20px;
+}
+
+ul.CTAs a {
+  text-align: center;
+  font-size: 0.9em !important;
+  display: block;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+a.download {
+  background: #fff;
+  color: #7386d5;
+}
+
+a.article {
+  border-bottom: none;
+}
+
+a.article:hover {
+  background: rgb(87, 90, 116) !important;
+  color: #fff !important;
+}
+
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+#content {
+  padding: 5px 10px;
+  width: 100%;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+@media (max-width: 768px) {
+  #sidebar {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+    margin-right: -80px !important ;
+  }
+  a[aria-expanded="false"]::before,
+  a[aria-expanded="true"]::before {
+    top: auto;
+    bottom: 5px;
+    right: 50%;
+    -webkit-transform: translateX(50%);
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+  }
+  #sidebar.active {
+    margin-right: 0 !important;
+  }
+
+  #sidebar .sidebar-header h3,
+  #sidebar .CTAs {
+    display: none;
+  }
+
+  #sidebar .sidebar-header strong {
+    display: block;
+  }
+
+  #sidebar ul li a {
+    padding: 20px 10px;
+  }
+
+  #sidebar ul li a span {
+    font-size: 0.85em;
+  }
+  #sidebar ul li a i {
+    margin-right: 0;
+    display: block;
+  }
+
+  #sidebar ul ul a {
+    padding: 10px !important;
+  }
+
+  #sidebar ul li a i {
+    font-size: 1.3em;
+  }
+  #sidebar {
+    margin-left: 0;
+  }
+  #sidebarCollapse span {
+    display: none;
+  }
+}

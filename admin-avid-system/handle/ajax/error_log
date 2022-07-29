@@ -1,0 +1,16 @@
+[01-Dec-2019 09:44:40 UTC] PHP Parse error:  syntax error, unexpected 'E' (T_STRING) in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/fetch_users_profile_products_ajax.php on line 265
+[01-Dec-2019 09:44:41 UTC] PHP Parse error:  syntax error, unexpected 'E' (T_STRING) in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/fetch_users_profile_products_ajax.php on line 265
+[01-Dec-2019 09:44:47 UTC] PHP Parse error:  syntax error, unexpected 'E' (T_STRING) in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/fetch_users_profile_products_ajax.php on line 265
+[01-Dec-2019 09:46:20 UTC] PHP Parse error:  syntax error, unexpected 'E' (T_STRING) in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/fetch_users_profile_products_ajax.php on line 265
+[10-Dec-2019 10:42:22 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type PDOStatement as array in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/downloads.php:67
+Stack trace:
+#0 {main}
+  thrown in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/downloads.php on line 67
+[10-Dec-2019 10:42:51 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type PDOStatement as array in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/downloads.php:67
+Stack trace:
+#0 {main}
+  thrown in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/downloads.php on line 67
+[10-Dec-2019 10:43:33 UTC] PHP Fatal error:  Uncaught Error: Cannot use object of type PDOStatement as array in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/downloads.php:68
+Stack trace:
+#0 {main}
+  thrown in /home/avidsystem/supports.avidp.com/admin-avid-system/handle/ajax/downloads.php on line 68

@@ -1,0 +1,10 @@
+[04-Dec-2019 11:45:00 UTC] PHP Fatal error:  Uncaught Error: Class 'UserInfo' not found in /home/avidsystem/supports.avidp.com/admin-avid-system/server.php:63
+Stack trace:
+#0 /home/avidsystem/supports.avidp.com/admin-avid-system/index.php(2): include()
+#1 {main}
+  thrown in /home/avidsystem/supports.avidp.com/admin-avid-system/server.php on line 63
+[04-Dec-2019 11:45:18 UTC] PHP Fatal error:  Uncaught Error: Class 'UserInfo' not found in /home/avidsystem/supports.avidp.com/admin-avid-system/server.php:63
+Stack trace:
+#0 /home/avidsystem/supports.avidp.com/admin-avid-system/index.php(2): include()
+#1 {main}
+  thrown in /home/avidsystem/supports.avidp.com/admin-avid-system/server.php on line 63
