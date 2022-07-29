@@ -1,0 +1,597 @@
+
+$hostname = "localhost";
+$database = "avidsystem_supportsDB";
+$username = "avidsystem_supportsUser";
+$password = "supportsUser";
+
+
+/**********************************/
+$hostname = "localhost";
+$database = "avidsystem_supportsDB";
+$username = "root";
+$password = "";
+/**********************************/
+
+    $vcr_date = explode(' ', $row['vcrSupportDateTime']);
+    $vcr_date_array = $vcr_date[0];
+    $vcr_time_array = $vcr_date[1];
+
+
+    $date = date("Y-m-d H:i:s");
+    $array = explode(' ', $date);
+    list($year, $month, $day) = explode("-", $array[0]);
+    list($hour, $minute, $second) = explode(':', $array[1]);
+    $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
+
+    $jalali_date = tr_num(jdate("Y/m/d H:i:s", $timestamp));
+
+
+-----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tbSupport
+  intSupportIDPrimary 	int(11) 
+  intAdminID 	int(11) 
+  intUserID 	int(11) 
+  vcrSupportSubject 	
+  intSupportPriority 	int(4) 	
+  txtSupportComment 	text 
+  datSupportDateTime 	date 
+  vcrSupportFile 	varchar(300) 
+
+
+--------------------------------------------------------------------
+انتخاب خاص  پیام ها برای نمایش 
+$sql = "SELECT * FROM view_tbsupport WHERE intSupportParentID='0' AND intUserID='$idu' AND intSupportStatus <= '1'";
+   
+
+--------------------------------------------------------------------
+
+
+
+CREATE VIEW `view_tbsupport` AS
+SELECT tbadmin.intAdminID,tbusers.intUserID,tbusers.vcrFNameUser,tbusers.vcrLNameUser, tbsupport.intSupportID, tbsupport.intSupportParentID, tbsupport.intAdminID AS 'SAdminID',tbsupport.intUserID AS 'SUserID' ,tbsupport.vcrSupportSubject, tbsupport.intSupportPriority,tbsupport.txtSupportComment,tbsupport.datSupportDateTime,tbsupport.vcrSupportFile,tbsupport.vcrBarcode 
+FROM tbsupport 
+	LEFT JOIN tbusers ON tbsupport.intUserID = tbusers.intUserID
+	LEFT JOIN tbadmin ON tbsupport.intAdminID = tbadmin.intAdminID
+
+//***  اینجا یه سری امکاناتی برای مشاهده ارسال پاسخگو افزوده شده است  ***//
+SELECT tbadmin.intAdminID,tbusers.intUserID,tbusers.vcrFNameUser,tbusers.vcrLNameUser, tbsupport.intSupportID, tbsupport.intSupportParentID, tbsupport.intAdminID AS 'SAdminID',tbsupport.intUserID AS 'SUserID' ,tbsupport.vcrSupportSubject, tbsupport.intSupportPriority,tbsupport.txtSupportComment,tbsupport.vcrSupportDateTime,tbsupport.vcrSupportFile,tbsupport.vcrBarcode,tbsupport.intSupportStatus,
+tbsupport.intUserRelID AS 'SUsersRelID',tbusersrel.intUserRelID,tbusersrel.intUserID AS 'TbUserRel_UserID',tbusersrel.intUserRelSex,
+tbusersrel.vcrUserRelName,tbusersrel.vcrUserRelSection,tbusersrel.vcrUserRelContact,tbusersrel.vcrUserRelEmail,tbusersrel.vcrUserRelAddress
+FROM tbsupport 
+	LEFT JOIN tbusers ON tbsupport.intUserID = tbusers.intUserID
+	LEFT JOIN tbadmin ON tbsupport.intAdminID = tbadmin.intAdminID
+	INNER JOIN tbusersrel ON tbsupport.intUserRelID = tbusersrel.intUserRelID
+
+
+
+
+//// برای IP 
+
+CREATE VIEW `view_tbipuser_tbuser` AS
+SELECT tbusers.intUserID,tbusers.vcrFNameUser,tbusers.vcrLNameUser,tbusers.vcrUsernameUser,
+tbipuser.intIPUserID,tbipuser.intUserID AS 'ipUser_tbUser',tbipuser.vcrIPUserAddress,tbipuser.vcrIPUserOS,tbipuser.vcrIPUserBrowser,tbipuser.vcrIPUserDevice,tbipuser.vcrIPUserEntryDateTime,tbipuser.intIPUserStatusOnline 
+FROM tbipuser 
+	INNER JOIN tbusers ON tbipuser.intUserID = tbusers.intUserID
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------
+
+برای نمایش تعداد درخواست ها برای هر کاربر، مثلا یک کاربری پنج تا درخواست داده است.
+
+CREATE VIEW `view_tbsupportGroup` AS
+SELECT tbadmin.intAdminID,tbusers.intUserID,tbusers.vcrFNameUser,tbusers.vcrLNameUser, tbsupport.intSupportID, tbsupport.intSupportParentID, tbsupport.intAdminID AS 'SAdminID',tbsupport.intUserID AS 'SUserID' ,COUNT(*), tbsupport.vcrSupportSubject, tbsupport.intSupportPriority,tbsupport.txtSupportComment,tbsupport.intSupportStatus
+FROM tbsupport 
+	LEFT JOIN tbusers ON tbsupport.intUserID = tbusers.intUserID
+	LEFT JOIN tbadmin ON tbsupport.intAdminID = tbadmin.intAdminID
+    
+    WHERE tbsupport.intSupportParentID = 0 AND tbsupport.intSupportStatus = '0' OR tbsupport.intSupportStatus = '1'
+    GROUP BY tbsupport.intUserID
+
+
+
+
+------------------------------------------
+PROCEDURE
+
+
+
+
+برای مشتری یا کاربر
+CREATE PROCEDURE sp_Insert_Update_Delete_tbUsers
+(
+        IN `@flag` 				int(11)		,
+        IN `@HoghogiHaghighiUser` 		tinyint(1)	,
+        IN `@FNameUser` 			varchar(50)	,
+        IN `@LNameUser` 			varchar(70)	,
+        IN `@UsernameUser` 			varchar(100)	,
+        IN `@PasswordUser` 			varchar(255)	,
+        IN `@RepeatPasswordUser` 		varchar(255)	,
+        IN `@EmailUser` 			varchar(255)	,
+        IN `@PhoneNumberUser` 			varchar(11)	,
+ 	IN `@MobileNumberUser` 			varchar(11)	,
+        IN `@CreatedUser` 			date	,
+        IN `@AddressUser` 			varchar(300)	,
+        IN `@MapLat` 				varchar(100)	,
+        IN `@MapLag` 				varchar(100)	,
+        IN `@ImgProfileUser` 			varchar(300)	
+)
+BEGIN
+	IF `@flag` =-1 THEN
+	insert into tbusers (
+            	`intHoghogiHaghighiUser`		,
+            	`vcrFNameUser`		,
+            	`vcrLNameUser`		,
+            	`vcrUsernameUser`		,
+            	`vcrPasswordUser`		,
+            	`vcrRepeatPasswordUser`		,
+            	`vcrEmailUser`		,
+            	`vcrPhoneNumberUser`		,
+            	`vcrMobileNumberUser`		,
+            	`datCreatedUser`		,
+            	`vcrAddressUser`		,
+            	`vcrMapLat`			,
+            	`vcrMapLag`			,
+            	`vcrImgProfileUser`			
+        )values(
+            	`@HoghogiHaghighiUser`		,
+            	`@FNameUser`			,
+            	`@LNameUser`			,
+            	`@UsernameUser`			,
+            	`@PasswordUser`			,
+            	`@RepeatPasswordUser`		,
+            	`@EmailUser`			,
+            	`@PhoneNumberUser`		,
+            	`@MobileNumberUser`		,
+            	`@CreatedUser`			,
+            	`@AddressUser`			,
+            	`@MapLat`			,
+            	`@MapLag`			,
+            	`@ImgProfileUser`				
+
+        );
+        ELSEIF `@flag`!= -1 THEN
+        	IF `@FNameUser`='Del' THEN
+  			Delete from tbusers where `intUserID` = `@flag`;    
+                END IF;
+                
+	update tbusers set
+            	`intHoghogiHaghighiUser`=	`@HoghogiHaghighiUser`	,
+            	`vcrFNameUser`		=	`@FNameUser`		,
+            	`vcrLNameUser`		=	`@LNameUser`		,
+            	`vcrUsernameUser`	=	`@UsernameUser`		,
+            	`vcrPasswordUser`	=	`@PasswordUser`		,
+            	`vcrRepeatPasswordUser`	=	`@RepeatPasswordUser`	,
+            	`vcrEmailUser`		=	`@EmailUser`	,
+            	`vcrPhoneNumberUser`	=	`@PhoneNumberUser`	,
+            	`vcrMobileNumberUser`	=	`@MobileNumberUser`	,
+            	`vcrAddressUser`	=	`@AddressUser`		,
+            	`vcrMapLat`		=	`@MapLat`		,
+            	`vcrMapLag`		=	`@MapLag`	        ,
+            	`vcrImgProfileUser`	=	`@ImgProfileUser`		
+        WHERE   	`intUserID`	=	`@flag`;
+
+    END IF;
+END
+
+
+
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+برای محصول
+CREATE PROCEDURE sp_Insert_Update_Delete_tbProducts
+(
+        IN `@flag` 					int(11)		,
+        IN `@UserID` 					int(11)		,
+        IN `@ProductName` 				varchar(100)	,
+        IN `@AgreementProduct` 				varchar(100)	,
+        IN `@StartDateProductActivity` 			varchar(100)	,
+        IN `@EndDateProductActivity` 			varchar(100)	,
+        IN `@ProductStatusSeen` 			tinyint(1)	
+)
+BEGIN
+	IF `@flag` =-1 THEN
+	insert into tbproducts (
+            	`intUserID`		,
+            	`vcrProductName`		,
+            	`vcrAgreementProduct`		,
+            	`vcrStartDateProductActivity`		,
+            	`vcrEndDateProductActivity`		
+        )values(
+            	`@UserID`			,
+            	`@ProductName`		,
+            	`@AgreementProduct`			,
+            	`@StartDateProductActivity`			,
+            	`@EndDateProductActivity`								
+        );
+        ELSEIF `@flag`!= -1 THEN
+        		IF `@ProductName`='Del' THEN
+  		     		Delete from tbproducts where `intProductID` = `@flag`;
+                    
+                END IF;
+                
+	update tbproducts set
+            	`intUserID`	=	`@UserID`,
+            	`vcrProductName`	=	`@ProductName`,
+            	`vcrAgreementProduct`	=	`@AgreementProduct`,
+            	`vcrStartDateProductActivity`	=	`@StartDateProductActivity`,
+            	`vcrEndDateProductActivity`	=	`@EndDateProductActivity`
+        WHERE   	`intProductID`	=	`@flag`;
+    END IF;
+
+       IF `@flag`!= -2 THEN
+       update tbproducts set
+            	`intUserID`	=	`@UserID`,
+            	`intProductStatusSeen`	=	`@ProductStatusSeen`
+        WHERE   	`intProductID`	=	`@flag`;
+       END IF;
+END
+
+
+
+-----------------------------------------
+
+ثبت پیام و ثبت وضعیت بسته شده ، باز یا پاسخ داده شده
+
+CREATE PROCEDURE sp_Insert_Update_Delete_tbSupport
+(
+        IN `@flag` 				int(11)		,
+        IN `@SupportStatus` 			int(3)		
+)
+BEGIN
+IF `@flag` =-1 THEN
+	insert into tbsupport (
+            	`intSupportParentID`		,
+            	`intAdminID`		,
+            	`intUserID`		,
+            	`vcrSupportSubject`		,
+            	`intSupportPriority`		,
+            	`txtSupportComment`		,
+            	`datSupportDateTime`	,
+            	`vcrSupportDateTime`	,
+            	`vcrSupportFile`	,
+            	`vcrBarcode`	        ,
+            	`intUserRelID`		,
+            	`intSupportStatus`			
+
+        )values(
+            	`@SupportParentID`		,
+            	`@AdminID`			,
+            	`@UserID`			,
+            	`@SupportSubject`			,
+            	`@SupportPriority`			,
+            	`@SupportComment`		,
+            	`@dSupportDateTime`		,
+            	`@vSupportDateTime`		,
+            	`@SupportFile`		,
+            	`@Barcode`		,	
+            	`@UserRelID`		,	
+            	`@SupportStatus`		
+
+        );
+
+ELSEIF `@flag` =-2 THEN
+	insert into tbsupport (
+            	`intSupportParentID`		,
+            	`intAdminID`		,
+            	`intUserID`		,
+            	`vcrSupportSubject`		,
+            	`intSupportPriority`		,
+            	`txtSupportComment`		,
+            	`datSupportDateTime`	,
+            	`vcrSupportDateTime`	,
+            	`intUserRelID`				
+
+        )values(
+            	`@SupportParentID`		,
+            	`@AdminID`			,
+            	`@UserID`			,
+            	`@SupportSubject`			,
+            	`@SupportPriority`			,
+            	`@SupportComment`		,
+            	`@dSupportDateTime`		,
+            	`@vSupportDateTime`		,
+            	`@UserRelID`		
+
+        );
+
+ELSEIF `@flag`!= -1 THEN                
+	update tbsupport set
+            	`intSupportStatus`	=	`@SupportStatus`
+        WHERE  `intSupportID` = `@flag`   ;
+
+    END IF;
+
+END
+
+-------------------------
+
+//پیش فاکتور
+
+CREATE PROCEDURE sp_Insert_Update_Delete_tbPreInvoices
+(
+        IN `@flag` 					int(11)		,
+        IN `@UserID` 					int(11)		,
+        IN `@PreInvoiceDate` 				varchar(20)	,
+        IN `@PreInvoiceExpert` 				varchar(50)	,
+        IN `@PreInvoiceFilePath` 			varchar(300)	,
+        IN `@PreInvoiceConfirmation` 			tinyint(1)	,
+        IN `@PreInvoiceConfirmationDate`		varchar(20)	,
+        IN `@PreInvoiceDescription` 			text	,
+ 	IN `@PreInvoiceStatusSeen`			tinyint(1)
+)
+BEGIN
+	IF `@flag` =-1 THEN
+	insert into tbpreinvoices (
+            	`intUserID`		,
+            	`vcrPreInvoiceDate`		,
+            	`vcrPreInvoiceExpert`		,
+            	`vcrPreInvoiceFilePath`		,
+            	`bitPreInvoiceConfirmation`		,
+            	`txtPreInvoiceDescription`		
+        )values(
+            	`@UserID`			,
+            	`@PreInvoiceDate`		,
+            	`@PreInvoiceExpert`			,
+            	`@PreInvoiceFilePath`			,
+            	`@PreInvoiceConfirmation`			,
+            	`@PreInvoiceDescription`								
+        );
+        ELSEIF `@flag`!= -1 THEN
+        		IF `@PreInvoiceDate`='Del' THEN
+  		     		Delete from tbpreinvoices where `intPreInvoiceID` = `@flag`;
+                        END IF;
+            
+                        IF `@UserID` = 'Update' THEN
+	                    update tbpreinvoices set
+                             	`intPreInvoiceStatusSeen`	=	`@PreInvoiceStatusSeen`
+                            WHERE   	`intPreInvoiceID`	=	`@flag`;   
+                         ElSE 
+	                    update tbpreinvoices set
+                         	`intUserID`	=	`@UserID`,
+                         	`bitPreInvoiceConfirmation`	=	`@PreInvoiceConfirmation`,
+                         	`vcrPreInvoiceConfirmationDate`	=	`@PreInvoiceConfirmationDate`
+                            WHERE   	`intPreInvoiceID`	=	`@flag`;
+
+                        END IF;
+
+         END IF;
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// فاکتورها
+
+CREATE PROCEDURE sp_Insert_Update_Delete_tbInvoices
+(
+        IN `@flag` 								int(11)			,
+        IN `@UserID` 							int(11)			,
+        IN `@InvoicesPublishedDate` 			varchar(20)		,
+        IN `@InvoicesExpertName` 				varchar(50)		,
+        IN `@InvoicesImgInvoiceFile` 			varchar(200)	,
+        IN `@InvoicesImgAgreementFile` 			varchar(200)	,
+        IN `@InvoicesImgRecieveFile` 			varchar(200)	,
+        IN `@InvoicesDescription` 				text	,
+        IN `@InvoiceStatusSeen`                         tinyint(1)
+)
+BEGIN
+	IF `@flag` =-1 THEN
+	insert into tbinvoices (
+            	`intUserID`		,
+            	`vcrInvoicesPublishedDate`		,
+            	`vcrInvoicesExpertName`		,
+            	`vcrInvoicesImgInvoiceFile`		,
+            	`vcrInvoicesImgAgreementFile`		,
+            	`vcrInvoicesImgRecieveFile`		,
+            	`txtInvoicesDescription`		
+        )values(
+            	`@UserID`						,
+            	`@InvoicesPublishedDate`		,
+            	`@InvoicesExpertName`				,
+            	`@InvoicesImgInvoiceFile`			,
+            	`@InvoicesImgAgreementFile`			,
+            	`@InvoicesImgRecieveFile`			,
+            	`@InvoicesDescription`								
+        );
+        ELSEIF `@flag`!= -1 THEN
+        		IF `@InvoicesPublishedDate`='Del' THEN
+  		     		Delete from tbinvoices where `intInvoicesID` = `@flag`;
+                    
+               		END IF;
+                 IF `@UserID` = 'Update' THEN
+	                    update tbinvoices set
+                             	`intInvoiceStatusSeen`	=	`@InvoiceStatusSeen`
+                            WHERE   	`intInvoicesID`	=	`@flag`;   
+                        ElSE 
+	                    update tbinvoices set
+            	                `intUserID`						=	`@UserID`,
+            	                `vcrInvoicesPublishedDate`		=	`@InvoicesPublishedDate`,
+            	                `vcrInvoicesExpertName`			=	`@InvoicesExpertName`,
+            	                `vcrInvoicesImgInvoiceFile`		=	`@InvoicesImgInvoiceFile`,
+            	                `vcrInvoicesImgAgreementFile`	=	`@InvoicesImgAgreementFile`,
+            	                `vcrInvoicesImgRecieveFile`		=	`@InvoicesImgRecieveFile`,
+            	                `txtInvoicesDescription`		=	`@InvoicesDescription`
+                            WHERE 	`intInvoicesID`					=	`@flag`;
+                        END IF;
+    END IF;
+END
+
+
+
+
+
+
+
+
+
+
+
+//برای معرفی رابطین
+
+CREATE PROCEDURE sp_Insert_Update_Delete_tbUsersRel
+(
+        IN `@flag` 				int(11)		,
+        IN `@UserID` 			int(11)	,
+        IN `@UserRelSex` 			int(2)	,
+        IN `@UserRelName` 			varchar(100)	,
+        IN `@UserRelSection` 			varchar(100)	,
+        IN `@UserRelContact` 		varchar(50)	,
+        IN `@UserRelEmail` 			varchar(100)	,
+        IN `@UserRelAddress` 			varchar(300)	
+    
+)
+
+BEGIN
+	IF `@flag` =-1 THEN
+	insert into tbusersrel (
+            	`intUserID`		,
+            	`intUserRelSex`		,
+            	`vcrUserRelName`		,
+            	`vcrUserRelSection`		,
+            	`vcrUserRelContact`		,
+            	`vcrUserRelEmail`		,
+            	`vcrUserRelAddress`			
+        )values(
+            	`@UserID`		,
+            	`@UserRelSex`			,
+            	`@UserRelName`			,
+            	`@UserRelSection`			,
+            	`@UserRelContact`			,
+            	`@UserRelEmail`		,
+            	`@UserRelAddress`			
+
+        );
+	ELSEIF `@flag`!= -1 THEN
+        	IF `@UserRelName`='Del' THEN
+  				Delete from tbusersrel where `intUserRelID` = `@flag`;    
+            END IF;
+                
+	update tbusersrel set
+            	`intUserRelSex`		=	`@UserRelSex`	,
+            	`vcrUserRelName`	=	`@UserRelName`			,
+            	`vcrUserRelSection`	=	`@UserRelSection`			,
+            	`vcrUserRelContact`	=	`@UserRelContact`			,
+            	`vcrUserRelEmail`	=	`@UserRelEmail`			,
+            	`vcrUserRelAddress`	=	`@UserRelAddress`   		
+        WHERE   	`intUserRelID`		=	`@flag`;
+
+    END IF;
+END
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------
+برای دامنه ها
+
+CREATE PROCEDURE sp_Insert_Update_Delete_tbdomains
+(
+	IN `@flag` 					int(11)		,
+    IN `@DomainName` 			varchar(150)	,
+    IN `@DomainBuy_Domain_Miladi` 			varchar(30)	,
+    IN `@DomainBuy_Host_Miladi` 			varchar(30)	,
+    IN `@DomainExpire_Domain_Miladi` 			varchar(30)	,
+    IN `@DomainExpire_Host_Miladi` 	varchar(30)	,
+    IN `@DomainExpire_Domain_Shamsi` 			varchar(30)	,
+    IN `@DomainExpire_Host_Shamsi` 		varchar(30)	,
+ 	IN `@DomainDescribtion` 		varchar(200)	  
+    
+)
+BEGIN
+	IF `@flag` =-1 THEN
+	insert into tbdomains (
+            	`vcrDomainName`		,
+            	`vcrDomainBuy_Domain_Miladi`		,
+            	`vcrDomainBuy_Host_Miladi`		,
+            	`vcrDomainExpire_Domain_Miladi`		,
+            	`vcrDomainExpire_Host_Miladi`		,
+            	`vcrDomainExpire_Domain_Shamsi`	,
+            	`vcrDomainExpire_Host_Shamsi`	,
+            	`vcrDomainDescribtion`			
+        )values(
+            	`@DomainName`		,
+            	`@DomainBuy_Domain_Miladi`			,
+            	`@DomainBuy_Host_Miladi`			,
+            	`@DomainExpire_Domain_Miladi`			,
+            	`@DomainExpire_Host_Miladi`			,
+            	`@DomainExpire_Domain_Shamsi`		,
+            	`@DomainExpire_Host_Shamsi`		,
+            	`@DomainDescribtion`			
+
+        );
+	ELSEIF `@flag`!= -1 THEN
+        	IF `@DomainName`='Del' THEN
+  				Delete from tbdomains where `intDomainID` = `@flag`;    
+            END IF;
+                
+	update tbdomains set
+            	`vcrDomainName`		=	`@DomainName`	,
+            	`vcrDomainBuy_Domain_Miladi`	=	`@DomainBuy_Domain_Miladi`			,
+            	`vcrDomainBuy_Host_Miladi`	=	`@DomainBuy_Host_Miladi`			,
+            	`vcrDomainExpire_Domain_Miladi`	=	`@DomainExpire_Domain_Miladi`			,
+            	`vcrDomainExpire_Host_Miladi`	=	`@DomainExpire_Host_Miladi`			,
+            	`vcrDomainExpire_Domain_Shamsi`	=	`@DomainExpire_Domain_Shamsi`			,
+            	`vcrDomainExpire_Host_Shamsi`	=	`@DomainExpire_Host_Shamsi`			,
+            	`vcrDomainDescribtion`	=	`@DomainDescribtion`					
+        WHERE   	`intDomainID`		=	`@flag`;
+
+    END IF;
+END
